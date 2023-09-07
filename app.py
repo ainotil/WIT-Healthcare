@@ -9,9 +9,9 @@ import pandas as pd
 import pdf_parser as pdp
 
 
-st.set_page_config(layout="wide", page_title="Un-Report")
+st.set_page_config(layout="wide", page_title="Reportify")
 
-st.write("## Un-Report: Data -> Information")
+st.write("## Reportify: Data -> Information")
 st.write("### Convert scary pathological reports into friendly, readable visuals!")
 
 uploaded_reports = st.file_uploader("Select PDF Report files from your PC", accept_multiple_files=True)
