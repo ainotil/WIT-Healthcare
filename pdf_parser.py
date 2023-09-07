@@ -57,17 +57,18 @@ def update_dictionary(dic, month, pdf):
         if len(rows[2]) == 2:
             if float(rows[1]) < float(rows[2][0]):
                 sd = round((float(rows[2][0]) - float(rows[1])) / (float(rows[2][1])-float(rows[2][0])) * 100)
-                dic[month]["abnormal"].append([rows[0], float(rows[1]), str(sd) + '%'])
+                dic[month]["abnormal"].append([rows[0], float(rows[1]), sd])
                 score += sd
             elif float(rows[1]) > float(rows[2][1]):
                 sd = round((float(rows[1]) - float(rows[2][1])) / (float(rows[2][1])-float(rows[2][0])) * 100)
-                dic[month]["abnormal"].append([rows[0], float(rows[1]), str(sd) + '%'])
+                dic[month]["abnormal"].append([rows[0], float(rows[1]), sd])
                 score += sd
         elif float(rows[1]) != float(rows[2][0]):
             sd = round(abs(float(rows[1]) - float(rows[2][0])) / float(rows[2][0]) * 100)
-            dic[month]["abnormal"].append([rows[0], float(rows[1]), str(sd) + '%'])
+            dic[month]["abnormal"].append([rows[0], float(rows[1]), sd])
             score += sd
-
+    for i in range(len(dic[month]["abnormal"])):
+        dic[month]["abnormal"][i][2] = str(round(dic[month]["abnormal"][i][2]/score*100)) + "%"
     dic[month]["score"]  = round(score/16)
     # return dic
 
