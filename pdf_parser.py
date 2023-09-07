@@ -69,7 +69,7 @@ def update_dictionary(dic, month, pdf):
             score += sd
     for i in range(len(dic[month]["abnormal"])):
         dic[month]["abnormal"][i][2] = round(dic[month]["abnormal"][i][2]/score*100)
-    dic[month]["score"]  = round(score/16)
+    dic[month]["score"]  = 100 - round(score/16)
     # return dic
 
 

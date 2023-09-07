@@ -12,9 +12,9 @@ import pdf_parser as pdp
 st.set_page_config(layout="wide", page_title="Un-Report")
 
 st.write("## Un-Report: Data -> Information")
-st.write("Convert scary pathological reports into friendly, readable visuals!")
+st.write("### Convert scary pathological reports into friendly, readable visuals!")
 
-uploaded_reports = st.file_uploader("Select PDF files from your PC", accept_multiple_files=True)
+uploaded_reports = st.file_uploader("Select PDF Report files from your PC", accept_multiple_files=True)
 for uploaded_file in uploaded_reports:
     st.write("File:", uploaded_file.name)
 
@@ -45,6 +45,11 @@ for mon in dic.keys():
 for value in dic.values():
     score_list.append(value["score"])
 
+st.write("### Comparative Analysis Over Time: Health Score")
+
+if not visual_dict:
+    st.write("*Upload reports to generate graph!*")
+
 if visual_dict:
     fig = plt.figure(figsize=(7, 7))
     plt.plot(month_list, score_list)
@@ -55,7 +60,12 @@ if visual_dict:
 
 df = pd.DataFrame({'Month':month_list, 'Health Score':score_list})
 
+st.write("### Summary of biggest health indicators: larger share equals higher change.")
+
 option = st.selectbox('Pick a month for a Pie Chart', df)
+
+if not option:
+    st.write("*Upload reports to generate pie chart!*")
 
 if option:
     for ab in dic[option]["abnormal"]:
