@@ -1,6 +1,10 @@
 import re
+
 import streamlit as st
 from PyPDF2 import PdfReader
+import matplotlib.pyplot as plt
+import plotly.express as px
+import pandas as pd
 
 import pdf_parser as pdp
 
@@ -25,16 +29,40 @@ visual_dict = {}
 for mnth, fl in month_dct.items():
     pdp.update_dictionary(visual_dict, mnth, fl)
 
-print(visual_dict)
+# print(visual_dict)
 
-# for uploaded_file in uploaded_reports:
-#     pdf_reader = PdfReader(uploaded_file)
-#     dates = ""
-#     for page in pdf_reader.pages:
-#         dates += page.extract_text()
-#     # print('extracted dates value', dates)
-#     match = re.search('\nDate.*\n', dates)
-#     date_value = match.group(0)
-#     dates = date_value.split('-')[1]
-#     # print(dates)
+month_list = []
+score_list = []
+ab_list = []
+pie_value = []
 
+dic = visual_dict
+
+
+for mon in dic.keys():
+    month_list.append(mon)
+
+for value in dic.values():
+    score_list.append(value["score"])
+
+if visual_dict:
+    fig = plt.figure(figsize=(7, 7))
+    plt.plot(month_list, score_list)
+    plt.xlabel('Month')
+    plt.ylabel('Score')
+    plt.title('Overall Score')
+    st.pyplot(fig)
+
+df = pd.DataFrame({'Month':month_list, 'Health Score':score_list})
+
+option = st.selectbox('Pick a month for a Pie Chart', df)
+
+if option:
+    for ab in dic[option]["abnormal"]:
+        ab_list.append(ab[0])
+        pie_value.append(ab[2])
+
+    pie_fig = plt.figure(figsize=(7, 7))
+    plt.pie(pie_value, labels=ab_list, autopct='%1.1f%%', startangle=90)
+    plt.title('Abnormal element distribution')
+    st.pyplot(pie_fig)
