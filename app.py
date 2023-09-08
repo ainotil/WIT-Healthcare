@@ -11,8 +11,8 @@ import pdf_parser as pdp
 
 st.set_page_config(layout="wide", page_title="Reportify")
 
-st.write("## Reportify(Blood Test): Data -> Information")
-st.write("### Convert scary pathological reports into friendly, readable visuals!")
+st.write("## Reportify: Data -> Information")
+st.write("### Convert scary pathological reports such as blood tests into friendly, readable visuals!")
 
 uploaded_reports = st.file_uploader("Select PDF Report files from your PC", accept_multiple_files=True)
 for uploaded_file in uploaded_reports:
