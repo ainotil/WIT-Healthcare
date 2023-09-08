@@ -49,6 +49,8 @@ st.write("### Comparative Analysis Over Time: Health Score")
 
 if not visual_dict:
     st.write("*Upload reports to generate graph!*")
+else:
+    st.write(f"#### The most recent Health Score is {visual_dict[list(visual_dict.keys())[-1]]['score']}")
 
 if visual_dict:
     fig = plt.figure(figsize=(7, 7))
