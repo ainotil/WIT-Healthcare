@@ -5,6 +5,6 @@ This repo contains the code for the Reportify web app designed for the UNSW WIT 
 
 Contributors: @Ordoptimus, @ainotil, @Daung1
 
-Deployed Demo:
+Deployed Demo: https://wit-healthcare-reportify.streamlit.app/
 
 (Note that if you need to check the functionality of the software, please go to the *resource* folder in the repo and utilise the PDF files inside.)
