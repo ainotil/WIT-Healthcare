@@ -1,10 +1,11 @@
 import re
 
 import streamlit as st
-from PyPDF2 import PdfReader
 import matplotlib.pyplot as plt
-import plotly.express as px
+# import plotly.express as px
 import pandas as pd
+
+from PyPDF2 import PdfReader
 
 import pdf_parser as pdp
 
@@ -20,29 +21,21 @@ for uploaded_file in uploaded_reports:
 
 # print('reports:', uploaded_reports)
 
-month_dct = {}
+month_dct, visual_dict = {}, {}
+
 for uploaded_file in uploaded_reports:
     month_dct[pdp.get_month(uploaded_file)] = uploaded_file
 month_dct = dict(sorted(month_dct.items(), key = lambda x: x[0]))
 
-visual_dict = {}
 for mnth, fl in month_dct.items():
     pdp.update_dictionary(visual_dict, mnth, fl)
 
 # print(visual_dict)
 
-month_list = []
-score_list = []
-ab_list = []
-pie_value = []
+month_list, score_list, ab_list, pie_value = [], [], [], []
 
-dic = visual_dict
-
-
-for mon in dic.keys():
+for mon, value in visual_dict.items():
     month_list.append(mon)
-
-for value in dic.values():
     score_list.append(value["score"])
 
 st.write("### Comparative Analysis Over Time: Health Score")
@@ -71,7 +64,7 @@ if not option:
 
 if option:
     ab_value = []
-    for ab in dic[option]["abnormal"]:
+    for ab in visual_dict[option]["abnormal"]:
         ab_list.append(ab[0])
         ab_value.append(ab[1])
         pie_value.append(ab[2])
@@ -88,5 +81,10 @@ if option:
         else:
             st.write(f"*Your {ab_list[i]} level is "  + str(pie_value[i]) + "% higher than normal value!*")
         i += 1
-    st.write("Higher than normal value means you have too many red blood cells. It can be due to smoking, living at high altitudes, lung problems, or a rare condition called polycythemia vera. Quit smoking, treat lung issues, and stay hydrated.\n")
-    st.write("Lower than normal value happens when your blood doesn't have enough hemoglobin. It can make you feel tired and weak. To fix it, eat foods rich in iron (like meat and beans) and vitamins (like B12 and folate). Also, manage any chronic diseases and stop any bleeding.")
+    st.write("Higher than normal value means you have too many red blood cells.\
+              It can be due to smoking, living at high altitudes, lung problems, or a rare condition called polycythemia vera.\
+              Quit smoking, treat lung issues, and stay hydrated.\n")
+    st.write("Lower than normal value happens when your blood doesn't have enough hemoglobin.\
+              It can make you feel tired and weak. To fix it, eat foods rich in iron (like meat and beans) and vitamins (like B12 and folate).\
+              Also, manage any chronic diseases and stop any bleeding.")
+    

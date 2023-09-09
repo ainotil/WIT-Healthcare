@@ -1,7 +1,10 @@
+import re
+import os
+
 import camelot
 import PyPDF2
 from PyPDF2 import PdfReader
-import re
+
 
 month_mapping = {
     1: "January",
@@ -17,6 +20,7 @@ month_mapping = {
     11: "November",
     12: "December",
 }
+
 
 def get_month(pdf):
     pdf_reader = PdfReader(pdf)
@@ -43,11 +47,14 @@ def write_pdf(pdf_object):
 def update_dictionary(dic, month, pdf):
     month = month_mapping[month]
     dic[month] = {"score": 0, "abnormal": []}
+    
     write_pdf(pdf)
     tables = camelot.read_pdf('output.pdf', flavor='stream')
+    if os.path.exists("./output.pdf"):
+        os.remove("./output.pdf")
     
     score = 0
-    for index, row in tables[0].df[3:-1].iterrows():
+    for _, row in tables[0].df[3:-1].iterrows():
         rows = str(row).split('\n')[:3]
         i = 0
         while i < 3:
@@ -70,11 +77,10 @@ def update_dictionary(dic, month, pdf):
     for i in range(len(dic[month]["abnormal"])):
         dic[month]["abnormal"][i][2] = round(dic[month]["abnormal"][i][2]/score*100)
     dic[month]["score"]  = 100 - round(score/16)
-    # return dic
 
 
 if __name__ == "__main__":
     dict = {}
-    month = get_month("Complete_Blood_Count_1.pdf")
-    dict = update_dictionary(dict, month, "Complete_Blood_Count_1.pdf")
+    month = get_month("./resources/Complete_Blood_Count_1.pdf")
+    dict = update_dictionary(dict, month, "./resources/Complete_Blood_Count_1.pdf")
     print(dict)
